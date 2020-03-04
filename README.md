@@ -1,12 +1,41 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-03-04 17:00:56
+ * @LastEditTime: 2020-03-04 17:11:51
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \pytorch-OpCounter-dict-input\README.md
+ -->
 # THOP: PyTorch-OpCounter
 
+## new version update 
+this version is modified from `https://github.com/Lyken17/pytorch-OpCounter.git`. I replace the original list input into a dict() input. In this way, you can deal with more complicate situation esier. like 
+
+```
+# the original model forward() function.
+def forward(self, num_modalities, img_meta,     return_loss=True, **kwargs):
+```
+```
+# count the flops with dict() format input.
+flops, params = profile(model, inputs=dict(return_loss=False, **data))
+````
+
+ps: you can count the flops and params more easier in "mmaction" or "mmdet" style code with this method.
+
+
 ## How to install 
-    
-`pip install thop` (now continously intergrated on [Github actions](https://github.com/features/actions))
 
-OR
+'git clone https://github.com/ziming-liu/pytorch-OpCounter-dict-input'
 
-`pip install --upgrade git+https://github.com/Lyken17/pytorch-OpCounter.git`
+and then 
+```
+cd pytorch-OpCounter-dict-input
+chmod 777 build.sh
+./build.sh
+# pip install the missing package if there is error
+python setup.py develop
+pip intall .
+```
     
 ## How to use 
 * Basic usage 
@@ -15,7 +44,7 @@ OR
     from thop import profile
     model = resnet50()
     input = torch.randn(1, 3, 224, 224)
-    macs, params = profile(model, inputs=(input, ))
+    macs, params = profile(model, inputs=dict(input, ))
     ```    
 
 * Define the rule for 3rd party module.
@@ -26,7 +55,7 @@ OR
         # your rule here
     
     input = torch.randn(1, 3, 224, 224)
-    macs, params = profile(model, inputs=(input, ), 
+    macs, params = profile(model, inputs=dict(input, ), 
                             custom_ops={YourModule: count_your_model})
     ```
     

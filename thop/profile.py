@@ -97,7 +97,7 @@ def profile(model, inputs, custom_ops=None, verbose=True):
     model.apply(add_hooks)
 
     with torch.no_grad():
-        model(*inputs)
+        model(**inputs)
 
     total_ops = 0
     total_params = 0
@@ -165,7 +165,7 @@ def profile_2(model: nn.Module, inputs, custom_ops=None, verbose=True):
     model.apply(add_hooks)
 
     with torch.no_grad():
-        model(*inputs)
+        model(**inputs)
 
     def dfs_count(module: nn.Module, prefix="\t") -> (int, int):
         total_ops, total_params = 0, 0
